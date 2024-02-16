@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import 'dotenv/config';
+import { router as potsRouter } from './routes/posts';
+import { router as UsersRouter } from './routes/users';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -14,9 +16,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).send({ message: 'Hello world!!!' });
-});
+const Api_PREFIX = '/api';
+app.use(`${Api_PREFIX}/posts`, potsRouter)
+app.use(`${Api_PREFIX}/users`, UsersRouter)
+
 
 app.listen(port, () =>
   console.log(`🚀 Server listening at http://localhost:${port}`)
